@@ -1,0 +1,7 @@
+apply plugin: 'java'
+
+task(runMain, dependsOn: 'classes', type: JavaExec) {
+  main = 'lambdas.Main'
+  args "40"
+  classpath = sourceSets.main.runtimeClasspath
+}
