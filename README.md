@@ -1,5 +1,5 @@
 # FizzBuzz with Lambdas
-
+#####[View on github.io](http://scotthaleen.github.io/fizzbuzz-with-lambdas)
 <img align="right" width="150"
 src="http://raw.github.com/scotthaleen/fizzbuzz-with-lambdas/master/lambda.png" />
 
