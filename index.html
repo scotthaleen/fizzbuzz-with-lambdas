@@ -14,27 +14,22 @@
   </head>
   <body>
     <div class="wrapper">
-      <header>
-        <h1>FizzBuzz with Lambdas</h1>
-        <p>Functional implementation of FizzBuzz in different languages</p>
-
-        <p class="view"><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas">View the Project on GitHub <small>scotthaleen/fizzbuzz-with-lambdas</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
       <section>
+<div style="float: right">
+        <p class="view">
+          <a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas">
+            View the Project on GitHub <small>scotthaleen/fizzbuzz-with-lambdas</small></a></p>
+            <a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas"><img width="150" src="http://raw.github.com/scotthaleen/fizzbuzz-with-lambdas/master/lambda.png" /></a>
+</div>
+
         <h1>
 <a name="fizzbuzz-with-lambdas" class="anchor" href="#fizzbuzz-with-lambdas"><span class="octicon octicon-link"></span></a>FizzBuzz with Lambdas</h1>
 
-<p><img align="right" width="150" src="http://raw.github.com/scotthaleen/fizzbuzz-with-lambdas/master/lambda.png"></p>
 
 <p>Functional implementation of
-<a href="http://en.wikipedia.org/wiki/Fizz_buzz">FizzBuzz</a> using lambdas</p>
+<a href="http://en.wikipedia.org/wiki/Fizz_buzz">FizzBuzz</a> using
+lambdas 
+</p>  
 
 <p>This started as a project to make use of Java 8's new lambda
 expressions but I decided to implement the same (similar) functional
@@ -54,8 +49,7 @@ met return the <strong>String</strong>, if not return <strong>None/Empty/nil</st
 <pre><code>((Int) ⇒ Boolean, String) ⇒ (Int) ⇒ Optional[String]
 </code></pre>
 
-<div class="highlight highlight-java"><pre><span class="kd">static</span> <span class="kd">final</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Predicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;,</span> 
-        <span class="n">Function</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;&gt;</span>
+<div class="highlight highlight-java"><pre><span class="kd">static</span> <span class="kd">final</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Predicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;,</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;&gt;</span>
    <span class="n">isaFizzBuzz</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="n">sz</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
       <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sz</span><span class="o">);</span>
          <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
@@ -104,7 +98,7 @@ applying the predicate and string</p>
 <div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="k">def </span><span class="nv">conditions</span> <span class="p">(</span><span class="nf">juxt</span> <span class="nv">isFizz</span> <span class="nv">isBuzz</span><span class="p">))</span>
 </pre></div>
 
-<p>- Define a combination function for joining <strong>Optional[String]s</strong> and
+<p>- Define a combination function for joining <strong>Optional[String]</strong>s and
 <strong>None</strong>. </p>
 
 <ul>
@@ -361,11 +355,13 @@ FizzWoof
 22
 23
 Fizz
-</code></pre>
+</code>
+</pre>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/scotthaleen">scotthaleen</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme
+        by <a href="https://github.com/orderedlist">orderedlist</a> [modified]</small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
