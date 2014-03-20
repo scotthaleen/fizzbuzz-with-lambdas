@@ -20,7 +20,7 @@ The functional logic basically follows this
 
 <hr />
 
-Define a base function that takes a predicate and a **String**
+\- Define a base function that takes a predicate and a **String**
 and returns a function that takes an **Integer**.  <br />If the predicate is
 met return the **String**, if not return **None/Empty/nil**
 ```
@@ -43,7 +43,7 @@ static final Function<Predicate<Integer>, Function<String, Function<Integer, Opt
 (defn isaFizzBuzz [pred sz]
   (fn [i] (cond (pred i) sz)))
 ```
-Define higher order functions from the base function by partially
+\- Define higher order functions from the base function by partially
 applying the predicate and string
 
 ```
@@ -62,7 +62,7 @@ def isFizz = isaFizzBuzz((x) => x % 3 == 0, "Fizz")
    (fn [x] (= 0 (mod x 3)))
    "Fizz"))
 ```
-Create an ordered sequence of the functions to apply to each number.
+\- Create an ordered sequence of the functions to apply to each number.
 (juxtaposition)
 
 ```java
@@ -76,7 +76,7 @@ val conditions = List(isFizz, isBuzz)
 (def conditions (juxt isFizz isBuzz))
 ```
 
-Define a combination function for joining **Optional[String]s** and
+\- Define a combination function for joining **Optional[String]s** and
 **None**. 
 * **String** + **String** = **Combined Strings**
 * **String** + **nil** = **String**
@@ -107,7 +107,7 @@ use the **empty?** on **""** to achieve similar results to the
 (reduce str (conditions i))
 ```
 
-Reduce the results of applying each function and joining the strings
+\- Reduce the results of applying each function and joining the strings
 together with the combination function, to produce an optional
 **String**. If the result is **None/nil** return the input number as a
 **String**. 
@@ -136,7 +136,7 @@ i -> conditions.stream().sequential()
            sz)))
 ```
 
-Take the range from **1..N** and **map/apply** the function and print the
+\- Take the range from **1..N** and **map/apply** the function and print the
 results to the console. 
 
 ```java
@@ -165,6 +165,7 @@ IntStream.iterate(1, inc)
                (range 1 (inc limit)))]
   (println x))
 ```
+
 
 ```
 1
