@@ -76,7 +76,7 @@ val conditions = List(isFizz, isBuzz)
 (def conditions (juxt isFizz isBuzz))
 ```
 
-\- Define a combination function for joining **Optional[String]s** and
+\- Define a combination function for joining **Optional[String]**s and
 **None**. 
 * **String** + **String** = **Combined Strings**
 * **String** + **nil** = **String**
