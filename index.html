@@ -1,0 +1,374 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>FizzBuzz with Lambdas by scotthaleen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>FizzBuzz with Lambdas</h1>
+        <p>Functional implementation of FizzBuzz in different languages</p>
+
+        <p class="view"><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas">View the Project on GitHub <small>scotthaleen/fizzbuzz-with-lambdas</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="fizzbuzz-with-lambdas" class="anchor" href="#fizzbuzz-with-lambdas"><span class="octicon octicon-link"></span></a>FizzBuzz with Lambdas</h1>
+
+<p><img align="right" width="150" src="http://raw.github.com/scotthaleen/fizzbuzz-with-lambdas/master/lambda.png"></p>
+
+<p>Functional implementation of
+<a href="http://en.wikipedia.org/wiki/Fizz_buzz">FizzBuzz</a> using lambdas</p>
+
+<p>This started as a project to make use of Java 8's new lambda
+expressions but I decided to implement the same (similar) functional
+logic in
+<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/java8">Java</a>,
+<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/scala">Scala</a>,
+and 
+<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/clojure">Clojure</a>
+as comparisons.</p>
+
+<p>The functional logic basically follows this</p>
+
+<hr><p>- Define a base function that takes a predicate and a <strong>String</strong>
+and returns a function that takes an <strong>Integer</strong>.  <br>If the predicate is
+met return the <strong>String</strong>, if not return <strong>None/Empty/nil</strong></p>
+
+<pre><code>((Int) ⇒ Boolean, String) ⇒ (Int) ⇒ Optional[String]
+</code></pre>
+
+<div class="highlight highlight-java"><pre><span class="kd">static</span> <span class="kd">final</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Predicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;,</span> 
+        <span class="n">Function</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;&gt;</span>
+   <span class="n">isaFizzBuzz</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-&gt;</span> <span class="n">sz</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sz</span><span class="o">);</span>
+         <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+      <span class="o">};</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre>  <span class="k">def</span> <span class="n">isaFizzBuzz</span><span class="o">(</span><span class="n">p</span><span class="k">:</span><span class="o">(</span><span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">,</span> <span class="n">sz</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span>
+    <span class="o">(</span><span class="n">i</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="nc">Some</span><span class="o">(</span><span class="n">sz</span><span class="o">)</span>
+      <span class="k">else</span> <span class="nc">None</span>
+</pre></div>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">isaFizzBuzz</span> <span class="p">[</span><span class="nv">pred</span> <span class="nv">sz</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">i</span><span class="p">]</span> <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nf">pred</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">sz</span><span class="p">)))</span>
+</pre></div>
+
+<p>- Define higher order functions from the base function by partially
+applying the predicate and string</p>
+
+<pre><code>(Int) ⇒ Optional[String]
+</code></pre>
+
+<div class="highlight highlight-java"><pre><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span>
+   <span class="n">isFizz</span> <span class="o">=</span> <span class="n">isaFizzBuzz</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">).</span><span class="na">apply</span><span class="o">(</span><span class="s">"Fizz"</span><span class="o">);</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre><span class="k">def</span> <span class="n">isFizz</span> <span class="k">=</span> <span class="n">isaFizzBuzz</span><span class="o">((</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="o">,</span> <span class="s">"Fizz"</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="k">def </span><span class="nv">isFizz</span>
+  <span class="p">(</span><span class="nf">isaFizzBuzz</span>
+   <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span> <span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">x</span> <span class="mi">3</span><span class="p">)))</span>
+   <span class="s">"Fizz"</span><span class="p">))</span>
+</pre></div>
+
+<p>- Create an ordered sequence of the functions to apply to each number.
+(juxtaposition)</p>
+
+<div class="highlight highlight-java"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;</span>
+   <span class="n">conditions</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">isFizz</span><span class="o">,</span> <span class="n">isBuzz</span><span class="o">);</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">conditions</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="n">isFizz</span><span class="o">,</span> <span class="n">isBuzz</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="k">def </span><span class="nv">conditions</span> <span class="p">(</span><span class="nf">juxt</span> <span class="nv">isFizz</span> <span class="nv">isBuzz</span><span class="p">))</span>
+</pre></div>
+
+<p>- Define a combination function for joining <strong>Optional[String]s</strong> and
+<strong>None</strong>. </p>
+
+<ul>
+<li>
+<strong>String</strong> + <strong>String</strong> = <strong>Combined Strings</strong>
+</li>
+<li>
+<strong>String</strong> + <strong>nil</strong> = <strong>String</strong>
+</li>
+<li>
+<strong>nil</strong> + <strong>nil</strong> = <strong>nil</strong>. </li>
+</ul><div class="highlight highlight-java"><pre><span class="kd">static</span> <span class="kd">final</span> <span class="n">BinaryOperator</span><span class="o">&lt;</span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span>
+   <span class="n">combiner</span> <span class="o">=</span> <span class="o">(</span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">a</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">isPresent</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="na">get</span><span class="o">());</span>
+         <span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+            <span class="k">return</span> <span class="n">b</span><span class="o">;</span>
+      <span class="o">};</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre>  <span class="k">def</span> <span class="n">combine</span><span class="o">(</span><span class="n">a</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">b</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span>
+    <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">b</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="n">s1</span><span class="o">),</span> <span class="nc">Some</span><span class="o">(</span><span class="n">s2</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span><span class="o">)</span>
+      <span class="k">case</span> <span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="k">_</span><span class="o">),</span> <span class="nc">None</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span>
+      <span class="k">case</span> <span class="o">(</span><span class="nc">None</span><span class="o">,</span> <span class="nc">Some</span><span class="o">(</span><span class="k">_</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="n">b</span>
+      <span class="k">case</span> <span class="o">(</span><span class="k">_</span><span class="o">,</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">None</span>
+    <span class="o">}</span>
+</pre></div>
+
+<p><strong>clojure</strong> handles this a bit differently because <strong>str</strong> will combine <strong>nil</strong>
+and a <strong>String</strong> and <strong>nil</strong> + <strong>nil</strong> results in <strong>""</strong> we can just
+use the <strong>empty?</strong> on <strong>""</strong> to achieve similar results to the
+<strong>Optional</strong> <strong>None</strong> </p>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="nb">reduce str </span><span class="p">(</span><span class="nf">conditions</span> <span class="nv">i</span><span class="p">))</span>
+</pre></div>
+
+<p>- Reduce the results of applying each function and joining the strings
+together with the combination function, to produce an optional
+<strong>String</strong>. If the result is <strong>None/nil</strong> return the input number as a
+<strong>String</strong>. </p>
+
+<pre><code>(Int) ⇒ String
+</code></pre>
+
+<div class="highlight highlight-java"><pre><span class="n">i</span> <span class="o">-&gt;</span> <span class="n">conditions</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">sequential</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">reduce</span><span class="o">(</span>
+      <span class="n">emptyString</span><span class="o">,</span>
+      <span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span><span class="o">)),</span>
+      <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+   <span class="o">).</span><span class="na">orElse</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="k">=&gt;</span>
+   <span class="n">conditions</span><span class="o">.</span><span class="n">foldLeft</span><span class="o">(</span><span class="n">emptyString</span><span class="o">)</span> <span class="o">{</span>
+      <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">fn</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">combine</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">fn</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+  <span class="o">}.</span><span class="n">orElse</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="n">toString</span><span class="o">)).</span><span class="n">get</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">i</span><span class="p">]</span>
+   <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">sz</span> <span class="p">(</span><span class="nb">reduce str </span><span class="p">(</span><span class="nf">conditions</span> <span class="nv">i</span><span class="p">))]</span>
+       <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="nv">sz</span><span class="p">)</span>
+           <span class="p">(</span><span class="nb">str </span><span class="nv">i</span><span class="p">)</span>
+           <span class="nv">sz</span><span class="p">)))</span>
+</pre></div>
+
+<p>- Take the range from <strong>1..N</strong> and <strong>map/apply</strong> the function and print the
+results to the console. </p>
+
+<div class="highlight highlight-java"><pre><span class="n">IntStream</span><span class="o">.</span><span class="na">iterate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">inc</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="n">limit</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">mapToObj</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span>
+      <span class="n">conditions</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">sequential</span><span class="o">()</span>
+         <span class="o">.</span><span class="na">reduce</span><span class="o">(</span>
+            <span class="n">emptyString</span><span class="o">,</span>
+            <span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span><span class="o">)),</span>
+            <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span>
+         <span class="o">).</span><span class="na">orElse</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+   <span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<div class="highlight highlight-scala"><pre>  <span class="nc">Stream</span><span class="o">.</span><span class="n">from</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="n">limit</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">i</span><span class="o">)</span> <span class="k">=&gt;</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">foldLeft</span><span class="o">(</span><span class="n">emptyString</span><span class="o">)</span> <span class="o">{</span>
+          <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">fn</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">combine</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">fn</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+        <span class="o">}.</span><span class="n">orElse</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="n">toString</span><span class="o">)).</span><span class="n">get</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">x</span> <span class="p">(</span><span class="nb">map </span><span class="nv">fizzbuzz</span>
+               <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">limit</span><span class="p">)))]</span>
+  <span class="p">(</span><span class="nb">println </span><span class="nv">x</span><span class="p">))</span>
+</pre></div>
+
+<pre><code>1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+FizzBuzz
+16
+17
+Fizz
+19
+Buzz
+</code></pre>
+
+<hr><h3>
+<a name="break-down-of-logic-java" class="anchor" href="#break-down-of-logic-java"><span class="octicon octicon-link"></span></a>Break Down of Logic (java)</h3>
+
+<p>Basically we want a Range of numbers from 1..N and for each number
+apply some function that will return the String to print or the number
+itself if no conditions are met. </p>
+
+<p>The <strong>isaFizzBuzz</strong> function is a way to
+<a href="http://en.wikipedia.org/wiki/Curry_(programming_language)">curry</a> the
+logic being applied to each number.  It allows you to create a partial
+function with the Predicate and String to return if the predicate is
+met. </p>
+
+<div class="highlight highlight-java"><pre><span class="n">Function</span><span class="o">&lt;</span><span class="n">Predicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;,</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;&gt;</span> <span class="n">isaFizzBuzz</span> <span class="o">=</span>
+ <span class="n">p</span> <span class="o">-&gt;</span> <span class="n">sz</span> <span class="o">-&gt;</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">sz</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span> 
+ <span class="o">};</span>
+</pre></div>
+
+<p>With this function we can now create higher order functions defining
+<strong>isFizz</strong> and <strong>isBuzz</strong> </p>
+
+<p>this is pseudo equivalent to this</p>
+
+<pre><code>isFizz = isaFizzBuzz(λ i -&gt; (i % 3) == 0, "Fizz")
+</code></pre>
+
+<p>The next chunk of logic to tackle is applying each function to a
+number.  This could be done with if/else or case/switch or possibly
+<a href="http://download.java.net/jdk8/docs/api/java/util/Optional.html#orElse-T-">Optional.orElse</a>.
+I preferred to create a List of the function
+that I want them to be applied. By using an ordered List I can
+just apply the functions and combine the results.  This is the reason
+for implementing the <code>BinaryOperator&lt;Optional&lt;String&gt;&gt;</code> <strong>combiner</strong>.
+This could alternatively be achieved if there was some kind of
+juxtaposition function like in <a href="http://clojuredocs.org/clojure_core/clojure.core/juxt">clojure</a></p>
+
+<p>This logic follows, apply the function on <em>i</em> combine the results with
+the previous result.  If the predicate does not pass the function just
+returns <em>empty</em>.  This means if all of the functions applied and none of
+the predicates are matched I can make use of the
+<a href="http://download.java.net/jdk8/docs/api/java/util/Optional.html#orElse-T-">Optional.orElse</a>
+to get the string value of the number and display it. And if multiple
+conditions are met like with <strong>15</strong>, Fizz and Buzz will be combined to
+print out <strong>FizzBuzz</strong></p>
+
+<p>That covers what is going on in this chunk of code</p>
+
+<div class="highlight highlight-java"><pre>  <span class="o">.</span><span class="na">mapToObj</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span>
+     <span class="n">conditions</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">sequential</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">reduce</span><span class="o">(</span>
+        <span class="n">emptyString</span><span class="o">,</span>
+        <span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">fn</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span><span class="o">)),</span>
+        <span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">combiner</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">x</span><span class="o">))</span>
+     <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+</pre></div>
+
+<p>What I like about this solution is the composability of this solution.
+It actually follows the
+<a href="http://en.wikipedia.org/wiki/Open/closed_principle">open/closed principle</a>
+although obviously not OO.</p>
+
+<p>If we want to extend this solution and say we want to add "Woof" for
+every multiple of 7. It only requires 2 changes</p>
+
+<p>The new partial function composed from the <strong>isaFizzBuzz</strong> function</p>
+
+<div class="highlight highlight-java"><pre><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span>
+   <span class="n">isWoof</span> <span class="o">=</span> <span class="n">isaFizzBuzz</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">7</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">).</span><span class="na">apply</span><span class="o">(</span><span class="s">"Woof"</span><span class="o">);</span>
+</pre></div>
+
+<p>And then add the new function to the end of the conditions list</p>
+
+<div class="highlight highlight-java"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;</span>
+   <span class="n">conditions</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">isFizz</span><span class="o">,</span> <span class="n">isBuzz</span><span class="o">,</span> <span class="n">isWoof</span><span class="o">);</span>
+</pre></div>
+
+<pre><code>$ ./run.sh 25
+1
+2
+Fizz
+4
+Buzz
+Fizz
+Woof
+8
+Fizz
+Buzz
+11
+Fizz
+13
+Woof
+FizzBuzz
+16
+17
+Fizz
+19
+Buzz
+FizzWoof
+22
+23
+Fizz
+Buzz
+</code></pre>
+
+<p>And we can very easily keep going </p>
+
+<div class="highlight highlight-java"><pre><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span>
+   <span class="n">isMeow</span> <span class="o">=</span> <span class="n">isaFizzBuzz</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">i</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">9</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span><span class="o">).</span><span class="na">apply</span><span class="o">(</span><span class="s">"Meow"</span><span class="o">);</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;&gt;</span>
+   <span class="n">conditions</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">isFizz</span><span class="o">,</span> <span class="n">isBuzz</span><span class="o">,</span> <span class="n">isWoof</span><span class="o">,</span> <span class="n">isMeow</span><span class="o">);</span>
+</pre></div>
+
+<pre><code>$ ./run.sh 25
+1
+2
+Fizz
+4
+Buzz
+Fizz
+Woof
+8
+FizzMeow
+Buzz
+11
+Fizz
+13
+Woof
+FizzBuzz
+16
+17
+FizzMeow
+19
+Buzz
+FizzWoof
+22
+23
+Fizz
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/scotthaleen">scotthaleen</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
