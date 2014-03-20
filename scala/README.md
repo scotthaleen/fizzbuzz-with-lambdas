@@ -18,7 +18,7 @@ Or
 
 ```
 $ sbt
-sbt> run 42
+sbt> run 20
 ```
 
 ```
