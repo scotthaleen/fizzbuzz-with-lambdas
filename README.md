@@ -99,10 +99,10 @@ static final BinaryOperator<Optional<String>>
       case (_,_) => None
     }
 ```
-clojure handles this a bit differently because **str** will combine **nil**
+**clojure** handles this a bit differently because **str** will combine **nil**
 and a **String** and **nil** + **nil** results in **""** we can just
 use the **empty?** on **""** to achieve similar results to the
-**Optinal** **None** 
+**Optional** **None** 
 ```clojure
 (reduce str (conditions i))
 ```
