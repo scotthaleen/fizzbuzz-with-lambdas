@@ -16,7 +16,7 @@ $ ./run.sh 42
 Or
 
 ```
-$ lein run 42
+$ lein run 20
 ```
 
 
