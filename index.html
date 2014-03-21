@@ -36,8 +36,9 @@ expressions but I decided to implement the same (similar) functional
 logic in
 <a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/java8">Java</a>,
 <a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/scala">Scala</a>,
-and 
-<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/clojure">Clojure</a>
+<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/clojure">Clojure</a>,
+and
+<a href="https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/python">Python</a>
 as comparisons.</p>
 
 <p>The functional logic basically follows this</p>
@@ -66,6 +67,10 @@ met return the <strong>String</strong>, if not return <strong>None/Empty/nil</st
   <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">i</span><span class="p">]</span> <span class="p">(</span><span class="nb">cond </span><span class="p">(</span><span class="nf">pred</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">sz</span><span class="p">)))</span>
 </pre></div>
 
+<div class="highlight highlight-python">python<pre><span class="k">def</span> <span class="nf">isaFizzBuzz</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">sz</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">sz</span> <span class="k">if</span> <span class="n">p</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">else</span> <span class="bp">None</span>
+</pre></div>
+
 <p>- Define higher order functions from the base function by partially
 applying the predicate and string</p>
 
@@ -85,6 +90,8 @@ applying the predicate and string</p>
    <span class="s">"Fizz"</span><span class="p">))</span>
 </pre></div>
 
+<div class="highlight highlight-python">python<pre><span class="n">isFizz</span> <span class="o">=</span> <spanclass="n">isaFizzBuzz</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"Fizz"</span><span class="p">)</span></pre></div>
+
 <p>- Create an ordered sequence of the functions to apply to each number.
 (juxtaposition)</p>
 
@@ -96,6 +103,9 @@ applying the predicate and string</p>
 </pre></div>
 
 <div class="highlight highlight-clojure">clojure<pre><span class="p">(</span><span class="k">def </span><span class="nv">conditions</span> <span class="p">(</span><span class="nf">juxt</span> <span class="nv">isFizz</span> <span class="nv">isBuzz</span><span class="p">))</span>
+</pre></div>
+
+<div class="highlight highlight-python">python<pre><span class="n">conditions</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="p">[</span><span class="n">isFizz</span><span class="p">,</span> <span class="n">isBuzz</span><span class="p">]]</span>
 </pre></div>
 
 <p>- Define a combination function for joining <strong>Optional[String]</strong>s and
@@ -135,6 +145,16 @@ use the <strong>empty?</strong> on <strong>""</strong> to achieve similar result
 <div class="highlight highlight-clojure">clojure<pre><span class="p">(</span><span class="nb">reduce str </span><span class="p">(</span><span class="nf">conditions</span> <span class="nv">i</span><span class="p">))</span>
 </pre></div>
 
+<p><strong>python</strong> handles this differently as well.
+  Because <strong>None</strong> evaluates to false we can use <strong>or</strong> to return and empty
+  string.  The empty string also evaluates to false this achieves the
+  similar <strong>Optional</strong> <strong>None</strong>
+  functionality </p>
+
+<div class="highlight highlight-python">python<pre><span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">"</span><span class="si">%s%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span> <span class="ow">or</span> <span class="s">''</span><span class="p">,</span> <span class="n">b</span> <span class="ow">or</span> <span class="s">''</span><span class="p">)</span>
+</pre></div>
+
 <p>- Reduce the results of applying each function and joining the strings
 together with the combination function, to produce an optional
 <strong>String</strong>. If the result is <strong>None/nil</strong> return the input number as a
@@ -164,6 +184,10 @@ together with the combination function, to produce an optional
            <span class="nv">sz</span><span class="p">)))</span>
 </pre></div>
 
+<div class="highlight highlight-python">python<pre><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">reduce</span><span class="p">(</span><span class="n">combine</span><span class="p">,</span> <span class="n">conditions</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+
 <p>- Take the range from <strong>1..N</strong> and <strong>map/apply</strong> the function and print the
 results to the console. </p>
 
@@ -191,6 +215,10 @@ results to the console. </p>
 <div class="highlight highlight-clojure">clojure<pre><span class="p">(</span><span class="nb">doseq </span><span class="p">[</span><span class="nv">x</span> <span class="p">(</span><span class="nb">map </span><span class="nv">fizzbuzz</span>
                <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">limit</span><span class="p">)))]</span>
   <span class="p">(</span><span class="nb">println </span><span class="nv">x</span><span class="p">))</span>
+</pre></div>
+
+<div class="highlight highlight-python">python<pre><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">reduce</span><span class="p">(</span><span class="n">combine</span><span class="p">,</span> <span class="n">conditions</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="n">s</span>
 </pre></div>
 
 <pre><code>1
