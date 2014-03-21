@@ -11,8 +11,9 @@ expressions but I decided to implement the same (similar) functional
 logic in
 [Java](https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/java8),
 [Scala](https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/scala),
-and 
-[Clojure](https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/clojure)
+[Clojure](https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/clojure),
+and
+[Python](https://github.com/scotthaleen/fizzbuzz-with-lambdas/tree/master/python),
 as comparisons.
 
 
@@ -43,6 +44,12 @@ static final Function<Predicate<Integer>, Function<String, Function<Integer, Opt
 (defn isaFizzBuzz [pred sz]
   (fn [i] (cond (pred i) sz)))
 ```
+```python
+def isaFizzBuzz(p, sz):
+    return lambda i : sz if p(i) else None
+```
+
+
 \- Define higher order functions from the base function by partially
 applying the predicate and string
 
@@ -62,6 +69,9 @@ def isFizz = isaFizzBuzz((x) => x % 3 == 0, "Fizz")
    (fn [x] (= 0 (mod x 3)))
    "Fizz"))
 ```
+```python
+isFizz = isaFizzBuzz(lambda x: x % 3 == 0, "Fizz")
+```
 \- Create an ordered sequence of the functions to apply to each number.
 (juxtaposition)
 
@@ -75,6 +85,10 @@ val conditions = List(isFizz, isBuzz)
 ```clojure
 (def conditions (juxt isFizz isBuzz))
 ```
+```python
+conditions = lambda x: [fn(x) for fn in [isFizz, isBuzz]]
+```
+
 
 \- Define a combination function for joining **Optional[String]**s and
 **None**. 
@@ -107,6 +121,15 @@ use the **empty?** on **""** to achieve similar results to the
 (reduce str (conditions i))
 ```
 
+**python** handles this differently as well. Because **None**
+evaluates to false we can use **or** to return and empty string.  The
+empty string also evaluates to false this achieves the similar
+**Optional** **None** functionality 
+```python
+def combine(a,b):
+    return "%s%s" % (a or '', b or '')
+```
+
 \- Reduce the results of applying each function and joining the strings
 together with the combination function, to produce an optional
 **String**. If the result is **None/nil** return the input number as a
@@ -134,6 +157,9 @@ i -> conditions.stream().sequential()
        (if (empty? sz)
            (str i)
            sz)))
+```
+```python
+lambda i: reduce(combine, conditions(i)) or str(i)
 ```
 
 \- Take the range from **1..N** and **map/apply** the function and print the
@@ -165,7 +191,10 @@ IntStream.iterate(1, inc)
                (range 1 (inc limit)))]
   (println x))
 ```
-
+```python
+for s in map(lambda i: reduce(combine, conditions(i)) or str(i), range(1, limit+1)):
+    print s
+```
 
 ```
 1
