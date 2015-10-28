@@ -28,7 +28,7 @@
         limit (if (nil? arg0) 30 (read-string arg0))
         ;; fizz buzz function
         fizzbuzz (fn [i]
-                    (let [sz (reduce str (conditions i))]
+                    (let [sz (apply str (conditions i))]
                       (if (empty? sz)
                         (str i)
                         sz)))]
